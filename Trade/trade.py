@@ -86,13 +86,13 @@ def priceCryptoUSDT():
     paramsx = {'symbol': crypto + 'USDT'}
     responsex = requests.get(urllist, params=paramsx)
     datax = responsex.json()
-    return float(datax['price'])
+    return datax['price']
 
 def priceBasecryptoUSDT():
     paramsy = {'symbol': base_crypto + 'USDT'}
     responsey = requests.get(urllist, params=paramsy)
     datay = responsey.json()
-    return float(datay['price'])
+    return datay['price']
 
 # Получаем цены для всех пар
 for crypto in stripped_pairs:
@@ -101,8 +101,26 @@ for crypto in stripped_pairs:
         price1 = priceCryptoUSDT()
         price3 = priceBasecryptoUSDT()
         if price is not None:
-            format_price = "{:10f}".format(price)
+            format_price1 = float(price1)
+            format_price = float("{:10f}".format(price))
+            format_price3 = float(price3)
+
             #print(f"Цена {crypto}/{base_crypto}: {price}")
-            print(f"{crypto}USDT", price1)
-            print(f"{crypto}{base_crypto}: {format_price}")
-            print(f"{crypto}USDT", price3)
+            #print(f"{crypto}{base_crypto}: {format_price}")
+            #print(f"{crypto}USDT", price3)
+
+            b = total_usdt / format_price1
+            a = b * format_price
+            l = a * format_price3
+            c = ((l * 0.3) / 100)
+            profit = l - c - total_usdt
+
+            if profit >= pr:
+                # print(f'Ваш баланс USDT: {total_usdt}')
+                print(f"{crypto}USDT", format_price1)
+                print(f"{crypto}{base_crypto}: {format_price}")
+                print(f"{crypto}USDT", format_price3)
+                print('Профит найден!!!!!!!!!!!!!!!!1')
+                print('profit = ', profit)
+                print("-------------------------------------")
+
